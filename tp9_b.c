@@ -58,13 +58,12 @@ struct estudiante cargar_estudiante(void) {
 }
 
 void imprimir_estudiante(struct estudiante e) {
-  printf("%10d", e.legajo);
-  printf(" %s", e.nombre);
+  printf("%10d %s", e.legajo, e.nombre);
 
   for (int i = 0; i < e.materia->cantidad_parciales; i++)
-    printf("%5d", e.materia->parcial[i]);
+    printf(" %d", e.materia->parcial[i]);
 
-  printf("\n");
+  printf(" Promedio: %.2f\n", e.materia->promedio);
 }
 
 void cargar_materia(materia_t *p) {
@@ -95,6 +94,20 @@ void cargar_parciales(materia_t *p) {
 
     p->parcial[i] = nota;
   }
+
+  calcular_promedio(p);
+}
+
+void calcular_promedio(materia_t *p) {
+  int suma = 0;
+
+  for (int i = 0; i < p->cantidad_parciales; i++)
+    suma += p->parcial[i];
+
+  if (p->cantidad_parciales > 0)
+    p->promedio = (float)suma / p->cantidad_parciales;
+  else
+    p->promedio = 0.0f;
 }
 
 materia_t* reservar_materias(int n) {
